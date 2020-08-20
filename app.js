@@ -1,6 +1,18 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const mongoURI = require("./config/keys").mongoURI;
+const memberRoutes = require("./routes/member");
 const app = express();
+
+mongoose
+  .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("mongodb successfully connected");
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -14,9 +26,12 @@ app.use((req, res, next) => {
   );
   next();
 });
+app.use(bodyParser.json());
+
+//app.use("/member", memberRoutes);
 
 app.use((req, res) => {
-  res.json({ message: "request sucessful" });
+  res.status(200).json({ message: "request sucessful" });
 });
 
 module.exports = app;
