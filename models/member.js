@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
+// Create Schema
 const memberSchema = new mongoose.Schema({
   first_name: { type: String, required: true },
   last_name: { type: String, required: true },
@@ -11,7 +12,7 @@ const memberSchema = new mongoose.Schema({
   age: { type: Number, required: true },
   marital_status: { type: String, required: true },
   email_address: { type: String },
-  mobile_number: { type: String, required: true },
+  mobile_number: { type: String, required: true, unique: true },
   address: { type: String, required: true },
   ward: { type: String, required: true },
   city: { type: String, required: true },

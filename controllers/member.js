@@ -14,6 +14,7 @@ module.exports.getAllMembers = (req, res, next) => {
 
 module.exports.addMember = (req, res, next) => {
   req.body.member = JSON.parse(req.body.member);
+
   const member = new Member({
     first_name: req.body.member.first_name,
     last_name: req.body.member.last_name,
@@ -32,6 +33,7 @@ module.exports.addMember = (req, res, next) => {
     state: req.body.member.state,
     group: req.body.member.group,
   });
+
   member
     .save(() => {
       res.status(200).json({ message: "request sucessfull" });
@@ -81,6 +83,7 @@ module.exports.updateMember = (req, res, next) => {
 };
 
 module.exports.getMember = (req, res, next) => {
+  req.body.member = JSON.parse(req.body.member);
   Member.findOne({ id: req.params.id })
     .then((member) => {
       res.status(200).json(member);
