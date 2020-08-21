@@ -13,29 +13,28 @@ module.exports.getAllMembers = (req, res, next) => {
 };
 
 module.exports.addMember = (req, res, next) => {
-  req.body.member = JSON.parse(req.body.member);
-
   const member = new Member({
-    first_name: req.body.member.first_name,
-    last_name: req.body.member.last_name,
-    other_name: req.body.member.other_name,
-    gender: req.body.member.gender,
-    religion: req.body.member.religion,
-    date_birth: req.body.member.date_birth,
-    age: req.body.member.age,
-    marital_status: req.body.member.marital_status,
-    email_address: req.body.member.email_address,
-    mobile_number: req.body.member.mobile_number,
-    address: req.body.member.address,
-    ward: req.body.member.ward,
-    city: req.body.member.city,
-    lga: req.body.member.lga,
-    state: req.body.member.state,
-    group: req.body.member.group,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    other_name: req.body.other_name,
+    gender: req.body.gender,
+    religion: req.body.religion,
+    date_birth: req.body.date_birth,
+    age: req.body.age,
+    marital_status: req.body.marital_status,
+    email_address: req.body.email_address,
+    mobile_number: req.body.mobile_number,
+    address: req.body.address,
+    ward: req.body.ward,
+    city: req.body.city,
+    lga: req.body.lga,
+    state: req.body.state,
+    group: req.body.group,
   });
 
   member
-    .save(() => {
+    .save()
+    .then(() => {
       res.status(200).json({ message: "request sucessfull" });
     })
     .catch((error) => {
@@ -45,36 +44,28 @@ module.exports.addMember = (req, res, next) => {
 };
 
 module.exports.updateMember = (req, res, next) => {
-  req.body.member = JSON.parse(req.body.member);
-  const member = new thing({
-    first_name: req.body.member.first_name,
-    last_name: req.body.member.last_name,
-    other_name: req.body.member.other_name,
-    gender: req.body.member.gender,
-    religion: req.body.member.religion,
-    date_birth: req.body.member.date_birth,
-    age: req.body.member.age,
-    marital_status: req.body.member.marital_status,
-    email_address: req.body.member.email_address,
-    mobile_number: req.body.member.mobile_number,
-    address: req.body.member.address,
-    ward: req.body.member.ward,
-    city: req.body.member.city,
-    lga: req.body.member.lga,
-    state: req.body.member.state,
-    group: req.body.member.group,
-  });
+  const member = {
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    other_name: req.body.other_name,
+    gender: req.body.gender,
+    religion: req.body.religion,
+    date_birth: req.body.date_birth,
+    age: req.body.age,
+    marital_status: req.body.marital_status,
+    email_address: req.body.email_address,
+    mobile_number: req.body.mobile_number,
+    address: req.body.address,
+    ward: req.body.ward,
+    city: req.body.city,
+    lga: req.body.lga,
+    state: req.body.state,
+    group: req.body.group,
+  };
 
-  Member.findOne({ mobile_number: req.body.member.mobile_number })
-    .then((member) => {
-      Member.updateOne({ _id: member.id }, member)
-        .then(() => {
-          res.status(200).json({ message: "update successful" });
-        })
-        .catch((error) => {
-          res.status(400).json({ error: "update request was unsuccessful" });
-          console.log(error);
-        });
+  Member.updateOne({ _id: req.params.id }, member)
+    .then(() => {
+      res.status(200).json({ message: "update successful" });
     })
     .catch((error) => {
       res.status(400).json({ error: "update request was unsuccessful" });
@@ -83,8 +74,7 @@ module.exports.updateMember = (req, res, next) => {
 };
 
 module.exports.getMember = (req, res, next) => {
-  req.body.member = JSON.parse(req.body.member);
-  Member.findOne({ id: req.params.id })
+  Member.findOne({ _id: req.params.id })
     .then((member) => {
       res.status(200).json(member);
     })
@@ -95,7 +85,7 @@ module.exports.getMember = (req, res, next) => {
 };
 
 module.exports.deleteMember = (req, res, next) => {
-  Member.deleteOne({ id: req.params.id })
+  Member.deleteOne({ _id: req.params.id })
     .then(() => {
       res.status(200).json({ message: "successfully deleted" });
     })

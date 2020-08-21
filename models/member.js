@@ -23,4 +23,4 @@ const memberSchema = new mongoose.Schema({
 
 memberSchema.plugin(uniqueValidator);
 
-module.exports = mongoose.model("Member", Member);
+module.exports = mongoose.model("Member", memberSchema);
