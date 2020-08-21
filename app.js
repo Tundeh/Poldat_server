@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 });
 app.use(bodyParser.json());
 
-//app.use("/member", memberRoutes);
+app.use("/member", memberRoutes);
 
 app.use((req, res) => {
   res.status(200).json({ message: "request sucessful" });
