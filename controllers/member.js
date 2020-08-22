@@ -1,5 +1,5 @@
 const Member = require("../models/Member");
-const { json } = require("body-parser");
+const validateMemberInput = require("../Validation/member");
 
 module.exports.getAllMembers = (req, res, next) => {
   Member.find()
@@ -13,34 +13,40 @@ module.exports.getAllMembers = (req, res, next) => {
 };
 
 module.exports.addMember = (req, res, next) => {
-  const member = new Member({
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    other_name: req.body.other_name,
-    gender: req.body.gender,
-    religion: req.body.religion,
-    date_birth: req.body.date_birth,
-    age: req.body.age,
-    marital_status: req.body.marital_status,
-    email_address: req.body.email_address,
-    mobile_number: req.body.mobile_number,
-    address: req.body.address,
-    ward: req.body.ward,
-    city: req.body.city,
-    lga: req.body.lga,
-    state: req.body.state,
-    group: req.body.group,
-  });
+  const { errors, isValid } = validateMemberInput(req.body);
 
-  member
-    .save()
-    .then(() => {
-      res.status(200).json({ message: "request sucessfull" });
-    })
-    .catch((error) => {
-      res.status(400).json({ error: error });
-      console.log(error);
+  if (!isValid) {
+    res.status(400).json({ errors });
+  } else {
+    const member = new Member({
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      other_name: req.body.other_name,
+      gender: req.body.gender,
+      religion: req.body.religion,
+      date_birth: req.body.date_birth,
+      age: req.body.age,
+      marital_status: req.body.marital_status,
+      email_address: req.body.email_address,
+      mobile_number: req.body.mobile_number,
+      address: req.body.address,
+      ward: req.body.ward,
+      city: req.body.city,
+      lga: req.body.lga,
+      state: req.body.state,
+      group: req.body.group,
     });
+
+    member
+      .save()
+      .then(() => {
+        res.status(200).json({ message: "request sucessfull" });
+      })
+      .catch((error) => {
+        res.status(400).json(error);
+        console.log(error);
+      });
+  }
 };
 
 module.exports.updateMember = (req, res, next) => {
