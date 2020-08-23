@@ -11,8 +11,8 @@ const validateMemberInput = (member) => {
       : "";
   }
 
+  // validate each input whether they meet requirements
   if (validator.isEmpty(member.first_name)) {
-    console.log(member.first_name);
     errors.first_name = "first name is empty";
   }
 
