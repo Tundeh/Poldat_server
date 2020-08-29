@@ -31,7 +31,7 @@ const validateUserInput = (user) => {
 
   return {
     errors,
-    isValid: errors.length < 1,
+    isInValid: errors.length > 0,
   };
 };
 

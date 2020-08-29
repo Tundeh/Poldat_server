@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const passport = require("passport");
 const userCtrl = require("../controllers/user");
 
 // @route   Post user/login
@@ -9,7 +10,11 @@ router.post("/login", userCtrl.loginUser);
 // @route   GET user/list
 // @desc    Get users
 // @access  Private
-router.get("/list", userCtrl.getUsers);
+router.get(
+  "/list",
+  passport.authenticate("jwt", { session: false }),
+  userCtrl.getUsers
+);
 
 // @route   POST User
 // @desc    Post Users
