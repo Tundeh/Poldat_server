@@ -4,8 +4,6 @@ const validateLoginInput = require("../Validation/login");
 const User = require("../models/user");
 const validateUserInput = require("../Validation/user");
 const keys = require("../config/keys");
-//const validateMemberInput = require("../Validation/member");
-//const user = require("../models/user");
 
 //add user function
 module.exports.addUser = (req, res, next) => {
@@ -63,7 +61,7 @@ module.exports.loginUser = (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       bcrypt.compare(req.body.password, user.password_hash).then((isMatch) => {
-        const payload = {
+        const pay_ld = {
           id: user.id,
           first_name: user.first_name,
           last_name: user.last_name,
@@ -71,14 +69,23 @@ module.exports.loginUser = (req, res, next) => {
         };
         if (isMatch) {
           jwt.sign(
-            payload,
+            pay_ld,
             keys.secretOrKey,
-            { expiresIn: 3600 },
+            { expiresIn: 604800 },
             (err, token) => {
               if (err) {
                 throw err;
               }
-              res.status(200).json(token);
+              res.status(200).json({
+                success: true,
+                token,
+                user: {
+                  id: user.id,
+                  first_name: user.first_name,
+                  last_name: user.last_name,
+                  email: user.email,
+                },
+              });
             }
           );
         } else {
