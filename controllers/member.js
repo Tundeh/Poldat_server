@@ -1,5 +1,7 @@
-const Member = require("../models/Member");
+const Member = require("../models/member");
+const idGenerator = require("../utils/idGenerator");
 const validateMemberInput = require("../Validation/member");
+const dOB = require("../utils/dateofBirth");
 
 module.exports.getAllMembers = (req, res, next) => {
   Member.find()
@@ -18,14 +20,20 @@ module.exports.addMember = (req, res, next) => {
   if (!isValid) {
     res.status(400).json({ errors });
   } else {
+    let member_id = idGenerator({ state: req.body.state, lga: req.body.lga });
+    let age = dOB(req.body.date_birth);
+
+    console.log(member_id);
+
     const member = new Member({
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       other_name: req.body.other_name,
+      member_id: member_id,
       gender: req.body.gender,
       religion: req.body.religion,
       date_birth: req.body.date_birth,
-      age: req.body.age,
+      age: age,
       marital_status: req.body.marital_status,
       email_address: req.body.email_address,
       mobile_number: req.body.mobile_number,
@@ -55,14 +63,16 @@ module.exports.updateMember = (req, res, next) => {
   if (!isValid) {
     res.status(400).json(errors);
   } else {
+    let age = dOB(req.body.date_birth);
     const member = {
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       other_name: req.body.other_name,
+      member_id: req.body.member_id,
       gender: req.body.gender,
       religion: req.body.religion,
       date_birth: req.body.date_birth,
-      age: req.body.age,
+      age: age,
       marital_status: req.body.marital_status,
       email_address: req.body.email_address,
       mobile_number: req.body.mobile_number,
