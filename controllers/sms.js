@@ -38,3 +38,16 @@ try{
 }
 
 }
+
+module.sendTo = (res, res) => {
+  const phoneNumbers = [req.body.mobile_number];
+  const options = {
+    to: phoneNumbers,
+    message: phoneNumbers
+  }
+sms.send(options).then(info => {
+  res.json(info);
+}).catch(error => {
+  res.status(500).json({message: "Message Not Sent"});
+})
+}
